@@ -1,0 +1,88 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at 20% 20%, #f4f7ff, #eef4ff 40%, #ffffff 90%);
+}
+
+main { min-height: 100vh; }
+
+.auth-layout,
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.auth-layout { display: grid; place-items: center; }
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  padding: 20px;
+}
+
+.auth-card { width: min(420px, 100%); display: flex; flex-direction: column; gap: 10px; }
+
+.grid { display: grid; grid-template-columns: 320px 1fr; gap: 18px; }
+
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+
+.stack { display: flex; flex-direction: column; gap: 10px; }
+
+button,
+input {
+  border-radius: 10px;
+  border: 1px solid #d5d9e3;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: #3151ff;
+  color: #fff;
+  border: none;
+}
+
+button.ghost { background: #eef2ff; color: #334155; }
+button.danger { background: #ef4444; }
+
+.docs { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; }
+.docs li { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.docs small { display: block; color: #64748b; }
+
+.chat-card { display: flex; flex-direction: column; gap: 10px; }
+.chat-box {
+  height: 440px;
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  max-width: 90%;
+}
+
+.message.user { background: #dbeafe; margin-left: auto; }
+.message.assistant { background: #e2e8f0; }
+.message p { margin: 0 0 6px; }
+
+.chat-form { display: flex; gap: 10px; }
+.chat-form input { flex: 1; }
+
+.error { color: #b91c1c; }
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .chat-box { height: 360px; }
+}
