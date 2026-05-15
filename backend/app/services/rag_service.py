@@ -3,17 +3,19 @@ from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from fastapi import HTTPException
 from app.core.config import get_settings
 
 
 settings = get_settings()
-_embeddings = OpenAIEmbeddings(api_key=settings.openai_api_key, model=settings.embedding_model)
 
 
 def get_vector_store() -> Chroma:
+    if not settings.openai_api_key:
+        raise HTTPException(status_code=500, detail='OPENAI_API_KEY is not configured')
     return Chroma(
         collection_name='documents',
-        embedding_function=_embeddings,
+        embedding_function=OpenAIEmbeddings(api_key=settings.openai_api_key, model=settings.embedding_model),
         persist_directory=settings.chroma_persist_directory,
     )
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './App.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -17,15 +17,29 @@ function App() {
 
   const authHeaders = useMemo(() => ({ Authorization: `Bearer ${token}` }), [token]);
 
-  useEffect(() => {
-    if (!token) {
-      setDocuments([]);
-      setChat([]);
-      return;
+  const fetchDocuments = useCallback(async () => {
+    try {
+      const res = await api('/api/documents/', { headers: authHeaders });
+      setDocuments(await res.json());
+    } catch (err) {
+      setError(err.message);
     }
+  }, [authHeaders]);
+
+  const fetchHistory = useCallback(async () => {
+    try {
+      const res = await api('/api/chat/history', { headers: authHeaders });
+      setChat(await res.json());
+    } catch (err) {
+      setError(err.message);
+    }
+  }, [authHeaders]);
+
+  useEffect(() => {
+    if (!token) return;
     fetchDocuments();
     fetchHistory();
-  }, [token]);
+  }, [token, fetchDocuments, fetchHistory]);
 
   async function api(path, options = {}) {
     const res = await fetch(`${API_BASE}${path}`, {
@@ -56,24 +70,6 @@ function App() {
       const data = await res.json();
       localStorage.setItem('token', data.access_token);
       setToken(data.access_token);
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
-  async function fetchDocuments() {
-    try {
-      const res = await api('/api/documents/', { headers: authHeaders });
-      setDocuments(await res.json());
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
-  async function fetchHistory() {
-    try {
-      const res = await api('/api/chat/history', { headers: authHeaders });
-      setChat(await res.json());
     } catch (err) {
       setError(err.message);
     }
@@ -160,6 +156,8 @@ function App() {
   function logout() {
     localStorage.removeItem('token');
     setToken('');
+    setDocuments([]);
+    setChat([]);
   }
 
   if (!token) {
