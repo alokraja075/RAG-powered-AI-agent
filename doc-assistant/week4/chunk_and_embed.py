@@ -46,11 +46,16 @@ def chunk_text(text: str, chunk_size: int, overlap: int) -> list[str]:
     if overlap >= chunk_size:
         raise ValueError("overlap must be smaller than chunk-size")
 
-    encoder = tiktoken.get_encoding("cl100k_base")
-    tokens = encoder.encode(text)
     step = chunk_size - overlap
-    token_chunks = [tokens[i : i + chunk_size] for i in range(0, len(tokens), step)]
-    return [encoder.decode(chunk) for chunk in token_chunks]
+    try:
+        encoder = tiktoken.get_encoding("cl100k_base")
+        tokens = encoder.encode(text)
+        token_chunks = [tokens[i : i + chunk_size] for i in range(0, len(tokens), step)]
+        return [encoder.decode(chunk) for chunk in token_chunks]
+    except Exception:
+        words = text.split()
+        word_chunks = [words[i : i + chunk_size] for i in range(0, len(words), step)]
+        return [" ".join(chunk) for chunk in word_chunks]
 
 
 def get_embedding(client, chunk: str) -> list[float]:
