@@ -1,0 +1,1 @@
+RAG stands for Retrieval-Augmented Generation. This sample file is indexed for semantic search.
