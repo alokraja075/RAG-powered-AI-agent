@@ -7,6 +7,12 @@ This folder contains a small script that:
 3. Sends each chunk to Amazon Bedrock Titan Embeddings v2.
 4. Prints the first 5 numbers of each embedding vector.
 
+## What you'll learn
+
+- What embeddings are and why chunking matters for retrieval quality.
+- How to call `amazon.titan-embed-text-v2:0` with `boto3` (`bedrock-runtime`).
+- The shape of an embedding vector and how to inspect it quickly.
+
 ## Run
 
 From `doc-assistant`:
